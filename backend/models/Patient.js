@@ -1,0 +1,34 @@
+import mongoose from 'mongoose';
+
+const patientSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  age: {
+    type: Number,
+    required: true
+  },
+  roomNumber: {
+    type: Number,
+    required: true
+  },
+  bedNumber: {
+    type: Number,
+    required: true
+  },
+  totalDays: {
+    type: Number,
+    required: true
+  },
+  admissionDate: {
+    type: Date,
+    required: true
+  },
+  dischargeDate: {
+    type: Date,
+    default: null
+  }
+}, { timestamps: true });
+
+export const Patient = mongoose.model('Patient', patientSchema);
