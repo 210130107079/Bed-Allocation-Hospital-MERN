@@ -3,6 +3,7 @@ import mongoose, { mongo } from 'mongoose';
 import cors from 'cors';
 import { Patient } from './models/Patient.js';
 import { Room } from './models/Room.js';
+import { Doctor } from './models/Doctor.js';
 
 const app = express();
 const PORT = 5000;
@@ -101,9 +102,43 @@ app.get('/api/patients/all',async(req,res)=>{
   }
 })
 
+//Add New Doctor
+app.post('/api/doctor/add',async(req,res)=>{
+  const {name,age} = req.body
+
+  try
+  {
+    const doctor = await Doctor.findOne({name})
+    if(doctor){
+      return res.status(404).json({ message: 'Doctor Already Exist !' });
+    }
+
+    const newDoctor = new Doctor({name,age})
+    await newDoctor.save()
+    res.status(200).json({message:"Doctor Added Successfully !"})
+  }
+  catch(error)
+  {
+    res.status(400).json({ message: error.message });
+  }
+})
+
+//Get All Doctor
+app.get('/api/doctor/get-doctors',async(req,res)=>{
+  try
+  {
+    const doctors = await Doctor.find()
+    res.json(doctors)
+  }
+  catch(error)
+  {
+    res.status(500).json({ message: error.message });
+  }
+})
+
 // Admit a patient
 app.post('/api/patients', async (req, res) => {
-  const { name, age, roomNumber, bedNumber, totalDays } = req.body;
+  const { name, age, roomNumber, bedNumber, totalDays , doctorName } = req.body;
   
   try {
     // Check if the bed is available
@@ -126,6 +161,7 @@ app.post('/api/patients', async (req, res) => {
       roomNumber,
       bedNumber,
       totalDays,
+      doctorName,
       admissionDate: new Date()
     });
     

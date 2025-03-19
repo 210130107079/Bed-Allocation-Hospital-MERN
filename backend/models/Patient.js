@@ -17,6 +17,10 @@ const patientSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  doctorName:{
+    type:String,
+    required:true
+  },
   totalDays: {
     type: Number,
     required: true

@@ -15,6 +15,9 @@ const Navbar = () => {
             <Link to="/" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">
               Dashboard
             </Link>
+            <Link to="/add-doc" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">
+              Add-New-Doc
+            </Link>
             <Link to="/admit" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">
               Admit-Patient
             </Link>

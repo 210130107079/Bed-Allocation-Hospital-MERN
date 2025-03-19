@@ -8,6 +8,7 @@ interface RoomBeds {
 }
 
 const AdmitPatient = () => {
+
   const navigate = useNavigate();
   const [availableRooms, setAvailableRooms] = useState<RoomBeds[]>([]);
   const [loading, setLoading] = useState(true);
@@ -16,11 +17,28 @@ const AdmitPatient = () => {
     age: '',
     roomNumber: '',
     bedNumber: '',
-    totalDays: ''
+    totalDays: '',
+    doctorName:'',
   });
   const [selectedRoom, setSelectedRoom] = useState<number | null>(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [doctors,setDoctors] = useState([])
+
+  useEffect(()=>{
+    const fetchDoctors = async () => {
+      try
+      {
+        const response = await axios.get('http://localhost:5000/api/doctor/get-doctors')
+        setDoctors(response.data)
+      }
+      catch(error)
+      {
+        console.log('Error Fetching Doctors',error);
+      }
+    }
+    fetchDoctors()
+  },[])
 
   useEffect(() => {
     const fetchAvailableBeds = async () => {
@@ -61,7 +79,7 @@ const AdmitPatient = () => {
     setSuccess('');
     
     // Basic validation
-    if (!formData.name || !formData.age || !formData.roomNumber || !formData.bedNumber || !formData.totalDays) {
+    if (!formData.name || !formData.age || !formData.roomNumber || !formData.bedNumber || !formData.totalDays || !formData.doctorName) {
       setError('All fields are required');
       return;
     }
@@ -72,7 +90,8 @@ const AdmitPatient = () => {
         age: parseInt(formData.age),
         roomNumber: parseInt(formData.roomNumber),
         bedNumber: parseInt(formData.bedNumber),
-        totalDays: parseInt(formData.totalDays)
+        totalDays: parseInt(formData.totalDays),
+        doctorName:formData.doctorName
       });
       
       setSuccess('Patient admitted successfully!');
@@ -81,7 +100,8 @@ const AdmitPatient = () => {
         age: '',
         roomNumber: '',
         bedNumber: '',
-        totalDays: ''
+        totalDays: '',
+        doctorName:'',
       });
       setSelectedRoom(null);
       
@@ -217,6 +237,27 @@ const AdmitPatient = () => {
                 placeholder="Enter total days"
               />
             </div>
+
+            <div>
+              <label htmlFor="doctorName" className="block text-sm font-medium text-gray-700 mb-1">
+                Doctor Name
+              </label>
+              <select
+                id="doctorName"
+                name="doctorName"
+                value={formData.doctorName}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select Doctor</option>
+                {
+                  doctors.map((doctor)=>(
+                    <option key={doctor._id} value={doctor.name}>{doctor.name}</option>
+                  ))
+                }
+              </select>
+            </div>
+
           </div>
           
           <div className="mt-6">

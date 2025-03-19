@@ -6,6 +6,7 @@ import AdmitPatient from './pages/AdmitPatient';
 import AdmittedPatientList from './pages/AdmittedPatientList';
 import DischargedPatients from './pages/DischargedPatients';
 import TotalPatientsList from './pages/TotalPatientsList';
+import AddNewDoc from './pages/AddNewDoc';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/admitted-patients" element={<AdmittedPatientList />} />
             <Route path="/discharged-patients" element={<DischargedPatients />} />
             <Route path="/patients-all" element={<TotalPatientsList />} />
+            <Route path="/add-doc" element={<AddNewDoc />} />
           </Routes>
         </div>
       </div>
