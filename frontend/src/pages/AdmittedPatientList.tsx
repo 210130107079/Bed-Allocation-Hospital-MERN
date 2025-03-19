@@ -20,7 +20,7 @@ const PatientList = () => {
 
   const fetchPatients = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/patients');
+      const response = await axios.get('http://localhost:5000/api/patients/admitted');
       setPatients(response.data);
       setLoading(false);
     } catch (error) {

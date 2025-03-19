@@ -21,7 +21,7 @@ const roomSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  beds: [bedSchema]
+  beds:[bedSchema]
 });
 
 export const Room = mongoose.model('Room', roomSchema);

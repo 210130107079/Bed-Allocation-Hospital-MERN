@@ -16,10 +16,16 @@ const Navbar = () => {
               Dashboard
             </Link>
             <Link to="/admit" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">
-              Admit Patient
+              Admit-Patient
             </Link>
-            <Link to="/patients" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">
-              Patient List
+            <Link to="/admitted-patients" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">
+              Patient-List
+            </Link>
+            <Link to="/discharged-patients" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">
+              Discharged-Patient-List
+            </Link>
+            <Link to="/patients-all" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">
+              All-Patient-List
             </Link>
           </div>
         </div>

@@ -17,9 +17,8 @@ const Dashboard = () => {
       try {
         const [bedsResponse, patientsResponse] = await Promise.all([
           axios.get('http://localhost:5000/api/beds/available'),
-          axios.get('http://localhost:5000/api/patients')
+          axios.get('http://localhost:5000/api/patients/admitted')
         ]);
-        
         setAvailableBeds(bedsResponse.data);
         setPatientCount(patientsResponse.data.length);
         setLoading(false);

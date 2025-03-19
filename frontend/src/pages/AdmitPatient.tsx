@@ -91,7 +91,7 @@ const AdmitPatient = () => {
       
       // Redirect to patient list after 2 seconds
       setTimeout(() => {
-        navigate('/patients');
+        navigate('/admitted-patients');
       }, 2000);
     } catch (error: any) {
       setError(error.response?.data?.message || 'Error admitting patient');

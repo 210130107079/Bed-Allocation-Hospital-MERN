@@ -1,5 +1,5 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import mongoose, { mongo } from 'mongoose';
 import cors from 'cors';
 import { Patient } from './models/Patient.js';
 import { Room } from './models/Room.js';
@@ -65,15 +65,41 @@ app.get('/api/beds/available', async (req, res) => {
   }
 });
 
-// Get all patients
-app.get('/api/patients', async (req, res) => {
+// Get Admitted patients
+app.get('/api/patients/admitted', async (req, res) => {
   try {
-    const patients = await Patient.find();
+    const patients = await Patient.find({dischargeDate:null})
     res.json(patients);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
+//Get Discharged Patients
+app.get('/api/patients/discharged',async(req,res)=>{
+  try
+  {
+    const patients = await Patient.find({ dischargeDate: { $ne:null}})
+    res.json(patients)
+  }
+  catch(error)
+  {
+    res.status(500).json({ message: error.message });
+  }
+})
+
+//get all the Patients
+app.get('/api/patients/all',async(req,res)=>{
+  try
+  {
+    const patients = await Patient.find()
+    res.json(patients)
+  }
+  catch(error)
+  {
+    res.status(500).json({ message: error.message });
+  }
+})
 
 // Admit a patient
 app.post('/api/patients', async (req, res) => {

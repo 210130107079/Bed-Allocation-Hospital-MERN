@@ -3,7 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import AdmitPatient from './pages/AdmitPatient';
-import PatientList from './pages/PatientList';
+import AdmittedPatientList from './pages/AdmittedPatientList';
+import DischargedPatients from './pages/DischargedPatients';
+import TotalPatientsList from './pages/TotalPatientsList';
 
 function App() {
   return (
@@ -14,7 +16,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/admit" element={<AdmitPatient />} />
-            <Route path="/patients" element={<PatientList />} />
+            <Route path="/admitted-patients" element={<AdmittedPatientList />} />
+            <Route path="/discharged-patients" element={<DischargedPatients />} />
+            <Route path="/patients-all" element={<TotalPatientsList />} />
           </Routes>
         </div>
       </div>
