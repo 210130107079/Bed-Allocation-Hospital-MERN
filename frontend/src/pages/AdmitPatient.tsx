@@ -127,7 +127,7 @@ const AdmitPatient = () => {
   }
 
   return (
-    <div>
+    <div className='select-none'>
       <h1 className="text-3xl font-bold mb-8 text-gray-800">Admit New Patient</h1>
       
       <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto">

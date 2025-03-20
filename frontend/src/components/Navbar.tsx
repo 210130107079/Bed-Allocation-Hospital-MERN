@@ -4,7 +4,7 @@ import { Guitar as Hospital } from 'lucide-react';
 
 const Navbar = () => {
   return (
-    <nav className="bg-blue-600 text-white shadow-md">
+    <nav className="bg-blue-600 text-white shadow-md select-none">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">

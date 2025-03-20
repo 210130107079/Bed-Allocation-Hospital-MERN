@@ -57,7 +57,7 @@ const AddNewDoc = () => {
     }
 
   return (
-    <div className="flex">
+    <div className="flex select-none">
       {/* FORM COMPONENT */}
       <div className="w-1/2 flex-col h-screen justify-center pt-28 mr-2">
         <div className="items-center mb-10 -mt-10">
