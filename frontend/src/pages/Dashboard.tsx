@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Bed, Users } from 'lucide-react';
+import useFetchAPI from '../hooks/useAPI';
 
 interface RoomBeds {
   roomNumber: number;
@@ -10,17 +11,20 @@ interface RoomBeds {
 const Dashboard = () => {
   const [availableBeds, setAvailableBeds] = useState<RoomBeds[]>([]);
   const [patientCount, setPatientCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [totalPatientCount, setTotalPatientCount] = useState(0);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [bedsResponse, patientsResponse] = await Promise.all([
+        const [bedsResponse, patientsResponse,totalPatientResponse] = await Promise.all([
           axios.get('http://localhost:5000/api/beds/available'),
-          axios.get('http://localhost:5000/api/patients/admitted')
+          axios.get('http://localhost:5000/api/patients/admitted'),
+          axios.get('http://localhost:5000/api/patients/discharged')
         ]);
         setAvailableBeds(bedsResponse.data);
         setPatientCount(patientsResponse.data.length);
+        setTotalPatientCount(totalPatientResponse.data.length)
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -46,7 +50,7 @@ const Dashboard = () => {
     <div>
       <h1 className="text-3xl font-bold mb-8 text-gray-800">Bed Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-blue-100 text-blue-600">
@@ -92,6 +96,30 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="flex items-center">
+            <div className="p-3 rounded-full bg-red-100 text-red-600">
+              <Users size={24} />
+            </div>
+            <div className="ml-4">
+              <p className="text-sm text-gray-500 uppercase">
+                Happy Patients
+              </p>
+              <p className="text-2xl font-semibold text-gray-700">
+                {totalPatientCount}
+              </p>
+            </div>
+          </div>
+          <div className="mt-4">
+            <div className="w-full bg-gray-200 rounded-full h-2.5">
+              <div
+                className="bg-red-600 h-2.5 rounded-full"
+                style={{ width: `${(totalPatientCount)}%` }}
+              ></div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6">
