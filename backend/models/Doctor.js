@@ -8,6 +8,10 @@ const docSchema = new mongoose.Schema({
     age:{
         type:Number,
         required:true
+    },
+    degree:{
+        type:String,
+        required:true
     }
 },{timestamps:true})
 

@@ -15,10 +15,10 @@ export const fetchDoctor = createAsyncThunk('/doctor/fetch',async () => {
     }
 )
 
-export const addDoctor = createAsyncThunk('/doctor/add',async ({name,age}) => {
+export const addDoctor = createAsyncThunk('/doctor/add',async ({name,age,degree}) => {
     try
     {
-        await axios.post('http://localhost:5000/api/doctor/add',{name,age})
+        await axios.post('http://localhost:5000/api/doctor/add',{name,age,degree},{headers:{'Content-Type' : 'application/json'}})
         console.log('Doctor Added Successfully');
         return 'Doctor Added Successfully!';
     }

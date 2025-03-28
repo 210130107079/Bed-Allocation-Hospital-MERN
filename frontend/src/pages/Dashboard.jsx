@@ -6,7 +6,7 @@ import HorizontalCard from '../components/HorizontalCard';
 const Dashboard = () => {
 
   //Used Hook Here instead of Redux Toolkit
-  //Task ws given by Ajju Bhai
+  //Task was given by Ajay Bhai
   const {data:beds, loading:loadingBeds, error:bedsError } = useFetchAPI('http://localhost:5000/api/beds/available');
   const admittedPatients = useFetchAPI('http://localhost:5000/api/patients/admitted');
   const dischargedPatients = useFetchAPI('http://localhost:5000/api/patients/discharged')
@@ -33,7 +33,7 @@ const Dashboard = () => {
 
   return (
     <div className="select-none">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">Bed Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-8 text-white bg-blue-600 w-fit px-3 py-2 rounded-lg hover:scale-110 hover:bg-blue-800">Dashboard</h1>
 
       {/* TOP PART */}
 
