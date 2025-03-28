@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Guitar as Hospital } from 'lucide-react';
+import { Bed } from 'lucide-react';
 
 const Navbar = () => {
   return (
@@ -8,7 +8,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Hospital className="h-8 w-8 mr-2" />
+            <Bed className="h-7 w-7 mr-2" />
             <Link to="/" className="text-xl font-bold">Bed Management</Link>
           </div>
           <div className="flex space-x-4">

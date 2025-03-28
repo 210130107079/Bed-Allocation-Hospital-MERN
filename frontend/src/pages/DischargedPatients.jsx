@@ -1,41 +1,15 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import {useDispatch,useSelector} from 'react-redux'
+import { dischargePatient, fetchDischargedPatients } from '../redux/patientSlice'
 
 const DischargedPatients = () => {
 
-    const [patients, setPatients] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [success, setSuccess] = useState('')
-    const [error, setError] = useState('')
+  const dispatch = useDispatch()
+  const {listTwo:patients,success,error,loading} = useSelector((state) => state.patients)
 
-    const fetchPatient = async () => {
-        try
-        {
-            const response = await axios.get('http://localhost:5000/api/patients/discharged')
-            setPatients(response.data)
-            setLoading(false)
-        }
-        catch(error)
-        {
-            console.error('Error fetching discharged patients:', error);
-            setError('Failed to load patients');
-            setLoading(false);
-        }
-    }
-
-    useEffect(()=>{
-        fetchPatient()
-    },[])
-
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        });
-      };
+  useEffect(()=>{
+    dispatch(fetchDischargedPatients())
+  },[dispatch])
 
     if (loading) {
         return (
@@ -47,7 +21,6 @@ const DischargedPatients = () => {
     
       return (
         <div className='select-none'>
-          <h1 className="text-3xl font-bold mb-8 text-gray-800">Patient List</h1>
           
           {error && (
             <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
@@ -110,9 +83,9 @@ const DischargedPatients = () => {
                           <div className="text-sm text-gray-500">{patient.age}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{patient.roomNumber}</div>
+                          <div className="text-sm text-gray-500 ">{patient.roomNumber}</div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
+                        <td className="px-6 py-4 whitesace-nowrap">
                           <div className="text-sm text-gray-500">{patient.bedNumber}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -122,10 +95,10 @@ const DischargedPatients = () => {
                           <div className="text-sm text-gray-500">{patient.doctorName}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{formatDate(patient.admissionDate)}</div>
+                          <div className="text-sm text-gray-500">{new Date(patient.admissionDate).toLocaleDateString()}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-500">{formatDate(patient.dischargeDate)}</div>
+                          <div className="text-sm text-gray-500">{new Date(patient.dischargeDate).toLocaleDateString()}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           {patient.dischargeDate ? (
@@ -141,7 +114,7 @@ const DischargedPatients = () => {
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           {!patient.dischargeDate && (
                             <button
-                              onClick={() => handleDischarge(patient._id)}
+                              onClick={() => dispatch(dischargePatient(patient._id))}
                               className="text-indigo-600 hover:text-indigo-900"
                             >
                               Discharge

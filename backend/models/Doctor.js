@@ -9,6 +9,6 @@ const docSchema = new mongoose.Schema({
         type:Number,
         required:true
     }
-})
+},{timestamps:true})
 
 export const Doctor = new mongoose.model('Doctor',docSchema)

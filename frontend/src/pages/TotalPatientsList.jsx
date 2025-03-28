@@ -1,37 +1,15 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import {useDispatch,useSelector} from 'react-redux'
+import {fetchAll} from '../redux/patientSlice.js'
 
-const DischargedPatients = () => {
-  const [patients, setPatients] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [success, setSuccess] = useState('');
-  const [error, setError] = useState('');
+const TotalPatientsList = () => {
 
-  const fetchPatient = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/patients/all');
-      setPatients(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching discharged patients:', error);
-      setError('Failed to load patients');
-      setLoading(false);
-    }
-  };
+  const dispatch = useDispatch()
+  const {listThree:patients,error,loading,success} = useSelector((state)=>state.patients)
 
-  useEffect(() => {
-    fetchPatient();
-  }, []);
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
+  useEffect(()=>{
+    dispatch(fetchAll())
+  },[success])
 
   const calculateExpectedDischargeDate = (admissionDate, totalDays) => {
     const admission = new Date(admissionDate);
@@ -39,9 +17,7 @@ const DischargedPatients = () => {
     return admission.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+      day: 'numeric'
     });
   };
 
@@ -55,7 +31,6 @@ const DischargedPatients = () => {
 
   return (
     <div className='select-none'>
-      <h1 className="text-3xl font-bold mb-8 text-gray-800">Patient List</h1>
 
       {error && (
         <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">{error}</div>
@@ -140,21 +115,21 @@ const DischargedPatients = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-500">
-                        {formatDate(patient.admissionDate)}
+                        {new Date(patient.admissionDate).toLocaleDateString()}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {patient.dischargeDate ? (
                         <div className="text-sm text-green-700">
-                          {formatDate(patient.dischargeDate)}
+                          {new Date(patient.dischargeDate).toLocaleDateString()}
                         </div>
                       ) : (
                         <div>
                           <div className="text-sm text-blue-700">
-                            {calculateExpectedDischargeDate(
+                            {(calculateExpectedDischargeDate(
                               patient.admissionDate,
                               patient.totalDays
-                            )}
+                            ))}
                           </div>
                           <span className="mt-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 px-2 py-1">
                             Expected Date
@@ -203,4 +178,4 @@ const DischargedPatients = () => {
   );
 };
 
-export default DischargedPatients;
+export default TotalPatientsList;

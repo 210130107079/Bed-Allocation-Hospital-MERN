@@ -4,9 +4,12 @@ import useFetchAPI from '../hooks/useAPI';
 import HorizontalCard from '../components/HorizontalCard';
 
 const Dashboard = () => {
+
+  //Used Hook Here instead of Redux Toolkit
+  //Task ws given by Ajju Bhai
   const {data:beds, loading:loadingBeds, error:bedsError } = useFetchAPI('http://localhost:5000/api/beds/available');
   const admittedPatients = useFetchAPI('http://localhost:5000/api/patients/admitted');
-  const dischargedPatients = useFetchAPI('http://localhost:5000/api/patients/discharged');
+  const dischargedPatients = useFetchAPI('http://localhost:5000/api/patients/discharged')
 
 
   if (loadingBeds || admittedPatients.loading || dischargedPatients.loading) {

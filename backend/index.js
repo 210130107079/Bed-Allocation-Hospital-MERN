@@ -1,9 +1,10 @@
 import express from 'express';
-import mongoose, { mongo } from 'mongoose';
+import mongoose from 'mongoose';
 import cors from 'cors';
-import { Patient } from './models/Patient.js';
 import { Room } from './models/Room.js';
-import { Doctor } from './models/Doctor.js';
+import bedsRouter from './routes/bedRoutes.js'
+import patientRouter from './routes/patientRoutes.js'
+import docRouter from './routes/docRoutes.js'
 
 const app = express();
 const PORT = 5000;
@@ -49,165 +50,12 @@ async function initializeRoomsAndBeds() {
 
 initializeRoomsAndBeds();
 
-// Get all available beds
-app.get('/api/beds/available', async (req, res) => {
-  try {
-    const rooms = await Room.find();
-    const availableBeds = rooms.map(room => {
-      return {
-        roomNumber: room.roomNumber,
-        beds: room.beds.filter(bed => !bed.isOccupied).map(bed => bed.bedNumber)
-      };
-    });
-    
-    res.json(availableBeds);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
 
-// Get Admitted patients
-app.get('/api/patients/admitted', async (req, res) => {
-  try {
-    const patients = await Patient.find({dischargeDate:null})
-    res.json(patients);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+//Routes
+app.use('/api/beds',bedsRouter)
+app.use('/api/patients',patientRouter)
+app.use('/api/doctor',docRouter)
 
-//Get Discharged Patients
-app.get('/api/patients/discharged',async(req,res)=>{
-  try
-  {
-    const patients = await Patient.find({ dischargeDate: { $ne:null}})
-    res.json(patients)
-  }
-  catch(error)
-  {
-    res.status(500).json({ message: error.message });
-  }
-})
-
-//get all the Patients
-app.get('/api/patients/all',async(req,res)=>{
-  try
-  {
-    const patients = await Patient.find()
-    res.json(patients)
-  }
-  catch(error)
-  {
-    res.status(500).json({ message: error.message });
-  }
-})
-
-//Add New Doctor
-app.post('/api/doctor/add',async(req,res)=>{
-  const {name,age} = req.body
-
-  try
-  {
-    const doctor = await Doctor.findOne({name})
-    if(doctor){
-      return res.status(404).json({ message: 'Doctor Already Exist !' });
-    }
-
-    const newDoctor = new Doctor({name,age})
-    await newDoctor.save()
-    res.status(200).json({message:"Doctor Added Successfully !"})
-  }
-  catch(error)
-  {
-    res.status(400).json({ message: error.message });
-  }
-})
-
-//Get All Doctor
-app.get('/api/doctor/get-doctors',async(req,res)=>{
-  try
-  {
-    const doctors = await Doctor.find()
-    res.json(doctors)
-  }
-  catch(error)
-  {
-    res.status(500).json({ message: error.message });
-  }
-})
-
-// Admit a patient
-app.post('/api/patients', async (req, res) => {
-  const { name, age, roomNumber, bedNumber, totalDays , doctorName } = req.body;
-  
-  try {
-    // Check if the bed is available
-    const room = await Room.findOne({ roomNumber });
-    
-    if (!room) {
-      return res.status(404).json({ message: 'Room not found' });
-    }
-    
-    const bedIndex = room.beds.findIndex(bed => bed.bedNumber === bedNumber && !bed.isOccupied);
-    
-    if (bedIndex === -1) {
-      return res.status(400).json({ message: 'Bed is not available' });
-    }
-    
-    // Create a new patient
-    const patient = new Patient({
-      name,
-      age,
-      roomNumber,
-      bedNumber,
-      totalDays,
-      doctorName,
-      admissionDate: new Date()
-    });
-    
-    // Mark the bed as occupied
-    room.beds[bedIndex].isOccupied = true;
-    
-    await room.save();
-    await patient.save();
-    
-    res.status(201).json(patient);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-// Discharge a patient
-app.put('/api/patients/:id/discharge', async (req, res) => {
-  try {
-    const patient = await Patient.findById(req.params.id);
-    
-    if (!patient) {
-      return res.status(404).json({ message: 'Patient not found' });
-    }
-    
-    if (patient.dischargeDate) {
-      return res.status(400).json({ message: 'Patient already discharged' });
-    }
-    
-    // Update patient discharge date
-    patient.dischargeDate = new Date();
-    await patient.save();
-    
-    // Free up the bed
-    const room = await Room.findOne({ roomNumber: patient.roomNumber });
-    const bedIndex = room.beds.findIndex(bed => bed.bedNumber === patient.bedNumber);
-    
-    if (bedIndex !== -1) {
-      room.beds[bedIndex].isOccupied = false;
-      await room.save();
-    }
-    
-    res.json(patient);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
