@@ -33,7 +33,7 @@ const Dashboard = () => {
 
   return (
     <div className="select-none">
-      <h1 className="text-3xl font-bold mb-8 text-white bg-blue-600 w-fit px-3 py-2 rounded-lg hover:scale-110 hover:bg-blue-800">Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-8 text-white bg-blue-600 w-fit px-3 py-2 rounded-lg">Dashboard</h1>
 
       {/* TOP PART */}
 

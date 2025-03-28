@@ -89,7 +89,7 @@ const AddNewDoc = () => {
   
         {/* LIST OF DOCS */}
         <div className="w-1/2 ml-2 h-screen">
-          <h1 className="text-3xl font-semibold bg-blue-600 px-3 py-2 hover:scale-110 hover:bg-blue-800 w-fit rounded-lg text-white mb-10">DOCTOR's LIST</h1>
+          <h1 className="text-3xl font-semibold bg-blue-600 px-3 py-2 w-fit rounded-lg text-white mb-10">DOCTOR's LIST</h1>
           {error && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">{error}</div>}
           {success && <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-md">{success}</div>}
           {loading ? (

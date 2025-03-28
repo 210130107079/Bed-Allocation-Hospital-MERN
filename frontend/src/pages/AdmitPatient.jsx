@@ -83,7 +83,7 @@ const AdmitPatient = () => {
 
   return (
     <div className='select-none'>
-      <h1 className="text-3xl font-bold mb-8 text-white bg-blue-600 hover:bg-blue-800 hover:scale-110 px-3 py-2 rounded-lg w-fit">Admit New Patient</h1>
+      <h1 className="text-3xl font-bold mb-8 text-white bg-blue-600  px-3 py-2 rounded-lg w-fit">Admit New Patient</h1>
       
       <div className="bg-white rounded-lg shadow-md p-6 max-w-2xl mx-auto">
         {error && (
